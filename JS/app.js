@@ -16,13 +16,20 @@ const searchWeather = () => {
     const URL = `https://api.openweathermap.org/data/2.5/weather?q=${searchInput.value}&units=metric&appid=${API_KEY}`;
     fetch(URL)
     .then(res => res.json())
-    .then(json => printWeather(json))
+        .then(json => printWeather(json))
+    searchInput.value = ''
 }
 
 /* Print Data in UI */
 const printWeather = json => {
+    if (json.message === 'city not found') {
+        innerText('error-msg', 'No City Found ❌')
+    }else{
     innerText('city', json.name)
     innerText('temp', json.main.temp)
     innerText('weather', json.weather[0].main)
-    getVar('icon').setAttribute('src', `http://openweathermap.org/img/wn/${json.weather[0].icon}@2x.png`)
+        getVar('icon').setAttribute('src', `http://openweathermap.org/img/wn/${json.weather[0].icon}@2x.png`)
+        innerText('error-msg', '')
+    }
+    
 }
